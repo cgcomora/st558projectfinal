@@ -6,7 +6,7 @@
 #
 #    http://shiny.rstudio.com/
 
-source("C:/Users/W447075/Documents/ST558/Comora_final/helpers.R")
+source("helpers.R")
 
 shinyServer(function(input, output,session){
      output$introduction <- renderText({
