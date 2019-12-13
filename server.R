@@ -6,7 +6,7 @@
 #
 #    http://shiny.rstudio.com/
 
-source("helpers.R")
+source("st558projectfinal/helpers.R")
 
 shinyServer(function(input, output,session){
      output$introduction <- renderText({

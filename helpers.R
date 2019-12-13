@@ -14,7 +14,7 @@ library(plotly)
 
 # read in the data
 # crimes <- read.csv("C:/Users/W447075/Documents/ST558/Comora_final/hate_crimes.csv")
-crimes <- read.csv("hate_crimes.csv")
+crimes <- read.csv("st558projectfinal/hate_crimes.csv")
 # initialize variables for each region of the U.S. 
 northeast <- c("Maine","New Hampshire","Vermont",
                "Massachusetts","Rhode Island",
