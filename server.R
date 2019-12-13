@@ -6,14 +6,10 @@
 #
 #    http://shiny.rstudio.com/
 
-#source("st558projectfinal/helpers.R")
-
 shinyServer(function(input, output,session){
      output$introduction <- renderText({
         "This is my introduction"
     })
-     
-     source("st558projectfinal/helpers.R")
      
      output$data <- renderText({
        "This page allows you to create some basic graphical
