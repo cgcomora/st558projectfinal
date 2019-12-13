@@ -133,6 +133,8 @@ shinyServer(function(input, output,session){
     })
 
 })
-    
+
+#run the application
+shinyApp(ui,server)
 
 
