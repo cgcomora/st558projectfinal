@@ -6,10 +6,10 @@
 #
 #    http://shiny.rstudio.com/
 
-load(data.R)
+
 
 shinyServer(function(input, output,session){
-  
+  load(data.R)
        output$introduction <- renderText({
         "This is my introduction"
     })
