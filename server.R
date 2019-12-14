@@ -62,7 +62,6 @@ df <- select(df, -12)
 df_scale <- scale(df)
 
 shinyServer(function(input, output,session){
-  load(data.R)
        output$introduction <- renderText({
         "This is my introduction"
     })
