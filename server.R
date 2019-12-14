@@ -61,10 +61,31 @@ df <- na.omit(df)
 df <- select(df, -12)
 df_scale <- scale(df)
 
-shinyServer(function(input, output,session){
-       output$introduction <- renderText({
-        "This is my introduction"
+shinyServer(function(input, output, session){
+       output$introduction1 <- renderText({
+        "The purpose of this ShinyApp is to allow users to explore data on
+         hate crimes from the website www.fivethirtyeight.com.  The data contains
+         information on hate crimes reported to the Southern Poverty Law Center (SPLC) 
+         and the FBI.  For the purposes of this app, we do not focus on how the data was
+         collected.  Our interests are solely in exploring the data and using 
+         supervised learning methods (generalized linear models and random forests)
+         to determine which variables in the data set are the best predictor of
+         hatecrimes, as measured by the SPLC or FBI."  
     })
+       output$introduction2 <- renderText({
+         "The app allows you to use a scatter plot to visually explore the relationships between 11 different
+         variables including median household income, share of the population with a high
+         school degree, and the number of hate crimes per 100k people.  The data represents
+         45 states (several have been removed due to missing values).  I have also added
+         a categorical variable called 'region' to allow you to compare variables across
+         each with a boxplot.  On the tab labeled 'Unsupervised Learning' you are able to 
+         conduct a Cluster Analysis, varying the number of clusters, to find subgroups of observations 
+         within the data and visualize the hierarchical relationships with a dendrogram.  Finally, 
+         you can explore some models using two supervised learning methods and make some predictions.  
+         There is also a 'Data' tab that allows you to scroll through the data, filter and download
+         to a csv file.  Please note that for the Clustering Analysis you must specify the
+         method for computing the distance between each pair of obervations."
+       })
      
      output$data <- renderText({
        "This page allows you to create some basic graphical
@@ -133,14 +154,15 @@ shinyServer(function(input, output,session){
     
     #render scatter plot
     output$scatterplot <- renderPlot({
-      scatter <- ggplot(crimes, aes_string(x = input$x,
-                                        y = input$y)) + 
-        geom_point(size = 3) + 
-        theme(axis.text.x = element_blank(),
-              axis.ticks.x = element_blank(),
-              axis.text.y = element_blank())
-      scatter
-    })
+        scatter <- ggplot(crimes, aes_string(x = input$x,
+                                             y = input$y)) + 
+          geom_point(size = 3) + 
+          theme(axis.text.x = element_blank(),
+                axis.ticks.x = element_blank(),
+                axis.text.y = element_blank())
+        scatter  
+      })
+  
     
     output$hover_info <- renderPrint({
       cat("input$plot_hover:\n")
@@ -183,6 +205,11 @@ shinyServer(function(input, output,session){
                        method = "cv", number = 10,
                        verboseIter = TRUE))
       print(model)
+      summary(model)
+      })
+    
+    output$predict <- renderPrint({
+      predict(model, newdata = data.frame(c(value())))
     })
 
 })
