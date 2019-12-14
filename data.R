@@ -14,7 +14,7 @@ library(plotly)
 
 # read in the data
 # crimes <- read.csv("C:/Users/W447075/Documents/ST558/Comora_final/hate_crimes.csv")
-crimes <- read.csv("st558projectfinal/hate_crimes.csv")
+crimes <- read.csv("hate_crimes.csv")
 # initialize variables for each region of the U.S. 
 northeast <- c("Maine","New Hampshire","Vermont",
                "Massachusetts","Rhode Island",
@@ -46,12 +46,6 @@ for (i in 1:length(crimes$state)){
 
 #define new column in data set with region assigned to state
 crimes$region <- region
-
-#create subsets of the data based on region
-crimes_ne <- crimes %>% filter(region == "northeast")
-crimes_west <- crimes %>% filter(region == "west")
-crimes_south <- crimes %>% filter(region == "south")
-crimes_midwest<- crimes %>% filter(region == "midwest")
 
 #create dataframe for unsupervised learning
 df <- column_to_rownames(crimes, var = "state")
