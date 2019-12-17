@@ -103,3 +103,4 @@ shinyUI(fluidPage(
                                  DT::dataTableOutput("mytable1"))
     )
 )))
+))
