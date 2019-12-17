@@ -21,7 +21,6 @@ library(plotly)
 
 
 # read in the data
-# crimes <- read.csv("C:/Users/W447075/Documents/ST558/Comora_final/hate_crimes.csv")
 crimes <- read.csv("C:/Users/W447075/Documents/ST558/st558projectfinal/hate_crimes.csv")
 # initialize variables for each region of the U.S. 
 northeast <- c("Maine","New Hampshire","Vermont",
@@ -41,6 +40,8 @@ west <- c("Washington","Idaho","Montana","Wyoming",
           "Oregon","California","Nevada","Utah",
           "Arizona","Colorado","New Mexico",
           "Alaska","Hawaii")
+
+#assign region based on state
 region <- vector()
 for (i in 1:length(crimes$state)){
   if(is.element(crimes$state[i], northeast)==TRUE){
@@ -62,6 +63,7 @@ df <- select(df, -12)
 df_scale <- scale(df)
 
 shinyServer(function(input, output, session){
+  #render text for introduction
        output$introduction1 <- renderText({
         "The purpose of this ShinyApp is to allow users to explore data on
          hate crimes from the website www.fivethirtyeight.com.  The data contains
@@ -94,39 +96,39 @@ shinyServer(function(input, output, session){
        'crimes' dataset."
      })
     
-    selectedData <- reactive({
-      crimes %>% filter(region ==input$region)
-    })
-    selectData2 <- reactive({
-      crimes[ , c("region",input$y)]
-    })
-    
-    selectData3 <- reactive({
+    #render reactive variable for box plot data
+    selectData3<- reactive({
       crimes[ , c("region", input$y2)]
     })
     
+    #render reactive variable for numerical summary
     mydata <- reactive({
       crimes[ ,input$var]
     })
     
+    #kmeans cluster analysis
     mycluster <- reactive({
       kmeans(df_scale, centers = input$k, nstart = 25)
     })
     
+    #distance calc for dendrogram
     d <- reactive({
       dist(df, method = input$dmethod)
     })
      
+    #cluster plot
     clusterplot <- reactive({
       plot(hclust(d(), method = input$cmethod))
     })
     
+    #render reactive variable for modelling method
     modelmethod <- reactive({
       input$regmethod
     })
     
+    #render 
     p <- reactive({
-      ggplot(crimes, aes_string(x = input$x,
+     ggplot(crimes, aes_string(x = input$x,
                                 y = input$y)) + 
         geom_point(size = 3) + 
         theme(axis.text.x = element_blank(),
@@ -153,14 +155,23 @@ shinyServer(function(input, output, session){
     )
     
     #render scatter plot
-    output$scatterplot <- renderPlot({
-        scatter <- ggplot(crimes, aes_string(x = input$x,
+    output$scatterplot <- renderUI({
+      observe({if (input$color == "red"){
+          scatter <- ggplot(crimes, aes_string(x = input$x,
                                              y = input$y)) + 
-          geom_point(size = 3) + 
+          geom_point(size = 3,aes_string(colour = "red")) + 
           theme(axis.text.x = element_blank(),
                 axis.ticks.x = element_blank(),
                 axis.text.y = element_blank())
-        scatter  
+        scatter}
+     else {
+      scatter <- ggplot(crimes, aes_string(x = input$x,
+                                           y = input$y)) + 
+        geom_point(size = 3,aes_string(colour = "blue")) + 
+        theme(axis.text.x = element_blank(),
+              axis.ticks.x = element_blank(),
+              axis.text.y = element_blank())
+      scatter}})
       })
   
     
@@ -208,9 +219,9 @@ shinyServer(function(input, output, session){
       summary(model)
       })
     
-    output$predict <- renderPrint({
-      predict(model, newdata = data.frame(c(value())))
-    })
+    #output$predict <- renderPrint({
+     # predict(model, newdata = data.frame(c(value())))
+  #  })
 
 })
 
