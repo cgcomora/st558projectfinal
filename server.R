@@ -157,23 +157,14 @@ shinyServer(function(input, output, session){
     
     #render scatter plot
     output$scatterplot <- renderUI({
-      observe({if (input$color == "red"){
-          scatter <- ggplot(crimes, aes_string(x = input$x,
+               scatter <- ggplot(crimes, aes_string(x = input$x,
                                              y = input$y)) + 
           geom_point(size = 3,aes_string(colour = "red")) + 
           theme(axis.text.x = element_blank(),
                 axis.ticks.x = element_blank(),
                 axis.text.y = element_blank())
-        scatter}
-     else {
-      scatter <- ggplot(crimes, aes_string(x = input$x,
-                                           y = input$y)) + 
-        geom_point(size = 3,aes_string(colour = "blue")) + 
-        theme(axis.text.x = element_blank(),
-              axis.ticks.x = element_blank(),
-              axis.text.y = element_blank())
-      scatter}})
-      })
+        scatter})
+     
   
     
     output$hover_info <- renderPrint({
